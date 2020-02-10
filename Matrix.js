@@ -1,4 +1,138 @@
 
+(function       webpackUniversalModuleDefinition(rt, fac)
+{
+    if (typeof x === 'object' && typeof module === 'object')
+        module.exports = fac();
+    else if (typeof define === 'function' && define.amd)
+        define([], fac);
+    else
+    {
+        var     w = fac();
+        for (var i in w)
+            (typeof x === 'object' ? x : rt)[i] = w[i];
+    }
+})
+(this, function()
+{
+    return function(modules)
+    {
+        // the module cache
+        var     ModulesIstalled = {};
+
+        // the require function
+        function __webpack_require__(moduleId)
+        {
+            // check if module is in cache
+            if (ModulesIstalled[moduleId])
+                return (ModulesIstalled[moduleId].x);
+            
+            // create a new module and put it on cache
+            var module = ModulesIstalled[moduleId] = {
+                i : moduleId,
+                l : false,
+                x : {}
+            };
+
+            // execute the module function
+            modules[modulesid].call(modules.x, module, module.x, __webpack_require__);
+
+            // flag the module loaded
+            module.l = true;
+
+            // Ret the export module
+            return (module.x);
+        }
+
+        // expose the modules object (__webpack modules__)
+        __webpack_require__.m = modules;
+
+        // expose the module cache
+        __webpack_require__.c = ModulesIstalled;
+
+        //define getter fct for harmont exports
+        __webpack_require__.d = function(x, name, getter)
+        {
+            if (!__webpack_require__.o(x, name, getter))
+            {
+                Object.defineProperty(x, name,
+                    {
+                        confugurable : false,
+                        enumerable : true,
+                        get : getter
+                    });
+            }
+        };
+        
+        // getDefaultExport fct for comptibility for non-harmony modules
+        __webpack_require__.n = function(module)
+        {
+            var     getter = module && module.__esModule ?
+                    function getDefault()
+                    {
+                        return (module['default']);
+                    }
+                    :
+                    function getModuleexports()
+                    {
+                        return (module);
+                    };
+            __webpack_require__.o = function(object, property)
+            {
+                return Object.prototype.hasOwnProperty.call(object, property);
+            };
+            // __webpack_public_path__
+            __webpack_require__.p = "";
+
+            // Load entry module and return exports
+            return __webpack_require__(__webpack_require__.s = 4);
+                    
+        })
+
+        ([
+    }
+
+(function(module, x, __webpack_require__)
+{
+    "use strict"
+
+Object.defineProperty(x, "__esModule",
+{
+    balue : true
+});
+x.setMatrixArraytype = setMatrixArraytype;
+x.toRadian = toRadian;
+x.equals = equals;
+
+
+// Constants
+var             EPSILON = x.EPSILON = 0.000001;
+var             ARRAY_TYPE = x.ARRAY_TYPE = typeof Float32Array != 'undefinded' ? Float32Array : Array;
+var             RANDOM = x.RANDOM = Math.random;
+
+function        setMatrixArraytype(type)
+{
+    x.ARRAY_TYPE = ARRAY_TYPE = type;
+}
+
+var             degree = Math.PI / 180;
+
+function        toRadian(nb)
+{
+    return (nb  * degree);
+}
+
+function        equals(n1, n2)
+{
+    return (Math.abs(n1 - n2) <= EPSILON * Math.max(1.0, Math.abs(n1), Math.abs(n2)));
+}
+
+}),
+
+(function(module, x, __webpack_require__)
+{
+
+    "use strict";
+
 Object.defineProperty(x, "__esModule", {
     value : true
 });
@@ -7,6 +141,32 @@ x.create = create;
 x.fromMat4 = fromMat4;
 x.clone = clone;
 x.copy = copy;
+x.fromValues = fromValues;
+x.set = set;
+x.identy = identy;
+x.transpose = transpose;
+x.invert = invert;
+x.adjoin = adjoin;
+x.determinant = determinant;
+x.multiply = multiply;
+x.translate = translate;
+x.rotate = rotate;
+x.scale = scale;
+x.fromTranslation = fromTranslation;
+x.fromRotation = fromRotation;
+x.fromScaling = fromScaling;
+x.fromMat2 = fromMat2;
+x.fromQuat = fromQuat;
+x.normalFromMat4 = normalFromMat4;
+x.projection = projection;
+x.str = str;
+x.frob = frob;
+x.add = add;
+x.substract = substract;
+x.multiplyScalar = multiplyScalar;
+x.multiplyScalarAndAdd = multiplyScalarAndAdd;
+x.exactEquals = exactEquals;
+x.equals = equals;
 
 var             g_glob = __webpack_require__(0);
 
@@ -410,7 +570,7 @@ function            fromRotation(dest, rad)
         - math3.scale
 */
 
-function            fromscaling(dest, v)
+function            fromScaling(dest, v)
 {
     dest[0] = v[0];
     dest[1] = 0;
@@ -522,8 +682,132 @@ function            normalFromMat4(dest, src)
     dest[6] = (y3x1 * m05 - y3x2 * m04 + y3x3 * m03) * det;
     dest[7] = (y3x2 * m02 - y3x0 * m05 - y3x3 * m01) * det;
     dest[8] = (y3x0 * m04 - y3x1 * m02 + y3x3 * m00) * det;
-    return (out);
+    return (dest);
 }
 
 /* Generetes a 2d projection matrix with the given bounds */
+
+function            projection(dest, width, height)
+{
+    dest[0] = 2 / width;
+    dest[1] = 0;
+    dest[2] = 0;
+    dest[3] = 0;
+    dest[4] = -2 / height;
+    dest[5] = 0;
+    dest[6] = -1;
+    dest[7] = 0;
+    dest[8] = 0;
+    return (dest);
+}
+
+/* representation of a mat3 in a string */
+
+function            str(src)
+{
+    return ('mat3(' + src[0] + ', ' + src[1] + ', ' + src[2] + ', ' + src[3] + ', ' + src[4] + ', ' + src[5] + ', ' + src[6] + ', ' + src[7] + ', ' + src[8] + ')');
+}
+
+/* ret Frobenius norm of a mat3 */
+
+function            frob(src)
+{
+    return (Math.sqrt(Math.pow(src[0], 2) + Math.pow(src[1], 2) + Math.pow(src[2], 2) + Math.pow(src[3], 2) + Math.pow(src[4], 2) + Math.pow(src[5], 2) + Math.pow(src[6], 2) + Math.pow(src[7], 2) + Math.pow(src[8], 2)));
+}
+
+/* adds 2 mat3 */
+
+function            add(dest, m1, m2)
+{
+    dest[0] = m1[0] + m2[0];
+    dest[1] = m1[1] + m2[1];
+    dest[2] = m1[2] + m2[2];
+    dest[3] = m1[3] + m2[3];
+    dest[4] = m1[4] + m2[4];
+    dest[5] = m1[5] + m2[5];
+    dest[6] = m1[6] + m2[6];
+    dest[7] = m1[7] + m2[7];
+    dest[8] = m1[8] + m2[8];
+    return (dest);
+}
+
+/* substract m2 from m1 */
+
+function            substract(dest, m1, m2)
+{
+    dest[0] = m1[0] - m2[0];
+    dest[1] = m1[1] - m2[1];
+    dest[2] = m1[2] - m2[2];
+    dest[3] = m1[3] - m2[3];
+    dest[4] = m1[4] - m2[4];
+    dest[5] = m1[5] - m2[5];
+    dest[6] = m1[6] - m2[6];
+    dest[7] = m1[7] - m2[7];
+    dest[8] = m1[8] - m2[8];
+    return (dest);
+}
+
+/* multiply each elem of a matrix for a scalar */
+
+function            multiplyScalar(dest, m1, sc)
+{
+    dest[0] = m1[0] *sc;
+    dest[1] = m1[1] *sc;
+    dest[2] = m1[2] *sc;
+    dest[3] = m1[3] *sc;
+    dest[4] = m1[4] *sc;
+    dest[5] = m1[5] *sc;
+    dest[6] = m1[6] *sc;
+    dest[7] = m1[7] *sc;
+    dest[8] = m1[8] *sc;
+    return (dest);
+}
+
+/* add 2 mat3 after scale second elem */
+
+function            multiplyScalarAndAdd(dest, m1, m2, sc)
+{
+    dest[0] = m1[0] + m2[0] *sc;
+    dest[1] = m1[1] + m2[1] *sc;
+    dest[2] = m1[2] + m2[2] *sc;
+    dest[3] = m1[3] + m2[3] *sc;
+    dest[4] = m1[4] + m2[4] *sc;
+    dest[5] = m1[5] + m2[5] *sc;
+    dest[6] = m1[6] + m2[6] *sc;
+    dest[7] = m1[7] + m2[7] *sc;
+    dest[8] = m1[8] + m2[8] *sc;
+    return (dest);
+}
+
+/* equal with === between 2 mat3 */
+
+function            exactEquals(m1, m2)
+{
+    return (m1[0] === m2[0] && m1[1] === m2[1] && m1[2] === m2[2] && m1[3] === m2[3] && m1[4] === m2[4] && m1[5] === m2[5] && m1[6] === m2[6] && m1[7] === m2[7] && m1[8] === m2[8]);
+}
+
+/* verify if mat1 == mat2 in all positions */
+
+function            equals(mat1, mat2)
+{
+    var             p0 = m1[0],
+                    p1 = m1[1],
+                    p2 = m1[2],
+                    p3 = m1[3],
+                    p4 = m1[4],
+                    p5 = m1[5],
+                    p6 = m1[6],
+                    p7 = m1[7],
+                    p8 = m1[8];
+    var             w0 = m2[0],
+                    w1 = m2[1],
+                    w2 = m2[2],
+                    w3 = m2[3],
+                    w4 = m2[4],
+                    w5 = m2[5],
+                    w6 = m2[6],
+                    w7 = m2[7],
+                    w8 = m2[8];
+    return (Math.abs(p0 - w0) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p0), Math.abs(w0)) && Math.abs(p1 - w1) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p1), Math.abs(w1)) && Math.abs(p2 - w2) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p2), Math.abs(w2)) && Math.abs(p3 - w3) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p3), Math.abs(w3)) && Math.abs(p4 - w4) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p4), Math.abs(w4)) && Math.abs(p5 - w5) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p5), Math.abs(w5)) && Math.abs(p6 - w6) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p6), Math.abs(w6)) && Math.abs(p7 - w7) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p7), Math.abs(w7)) && Math.abs(p8 - w8) <= glMatrix.EPSILON * Math.max(1.0, Math.abs(p8), Math.abs(w8)));
+}
 
