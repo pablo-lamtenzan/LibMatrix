@@ -1,3 +1,3 @@
 # LibMatrix
 
-JS complete matrix lib
+Hight performance matrix lib JS.
